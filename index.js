@@ -15,6 +15,12 @@ var mysqlConnection = mysql.createConnection({
     insecureAuth : true
     });
 
+mysqlConnection.connect((err)=> {
+        if(!err)
+        console.log('Connection Established Successfully');
+         else
+        console.log('Connection Failed!'+ JSON.stringify(err,undefined,2));
+    });
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}..`));
 
@@ -34,21 +40,15 @@ app.get('/',(req,res)=>{
         });
     })
 app.get('/learners/:id' , (req, res) => {
-    mysqlConnection.connect((err)=> {
-        if(!err)
-        console.log('Connection Established Successfully');
-         else
-        console.log('Connection Failed!'+ JSON.stringify(err,undefined,2));
-    });
+   
     const id =req.params.id;
     console.log(id)
     mysqlConnection.query(`SELECT * FROM users WHERE idusers = ${id} `, (err, rows, fields) => {
     if (!err)
     res.send(rows);
     else
-    mysqlConnection.end();
     console.log(err);
     })
     
     } 
-    );
+);
