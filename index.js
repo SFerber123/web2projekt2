@@ -46,8 +46,9 @@ app.get('/learners/:id' , (req, res) => {
     if (!err)
     res.send(rows);
     else
+    mysqlConnection.end();
     console.log(err);
     })
-    mysqlConnection.end();
+    
     } 
     );
