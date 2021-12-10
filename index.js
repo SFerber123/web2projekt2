@@ -7,10 +7,11 @@ var app = express();
 app.use(bodyparser.json());
 
 var mysqlConnection = mysql.createConnection({
-    host: process.env.host,
-    user: process.env.user,
-    password: process.env.password,
-    database: process.env.database,
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    port: '3306',
+    database: 'web2',
     multipleStatements: true,
     insecureAuth : true
     });
@@ -18,7 +19,7 @@ var mysqlConnection = mysql.createConnection({
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}..`));
-
+var vulnerability= true;
 app.get('/',(req,res)=>{
     
     res.writeHead(200,{
@@ -34,15 +35,40 @@ app.get('/',(req,res)=>{
         res.end();
         });
     })
-app.get('/learners/:id' , (req, res) => {
-   
+app.get('/users/:id' , (req, res) => {
     const id =req.params.id;
-    mysqlConnection.query(`SELECT * FROM users WHERE idusers = ${id} `, (err, rows, fields) => {
-    if (!err)
-    res.send(rows);
-    else
-    console.log(err);
+   if (vulnerability){
+        mysqlConnection.query(`SELECT * FROM users WHERE idusers = ${id} `, (err, rows, fields) => {
+        if (!err)
+            res.send(rows);
+        else
+            console.log(err);
     })
     
+   }else{
+        mysqlConnection.query(`SELECT * FROM users WHERE idusers = ? `,id, (err, rows, fields) => {
+            if (!err)
+                res.send(rows);
+            else
+                console.log(err);
+        })
+   }
+  
     } 
+);
+
+app.get('/getVulnerability' , (req, res) => {
+   
+        res.send(vulnerability);
+    } 
+);
+app.post('/setVulnerability' , (req, res) => {
+    if(vulnerability){
+        vulnerability=false;
+    }else{
+        vulnerability=true;
+    }
+    
+    res.send(vulnerability);
+} 
 );

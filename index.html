@@ -4,6 +4,70 @@
         <title>Example</title>
     </head>
     <body>
-        <p>This is an example of a simple HTML page with one paragraph.</p>
+        <div class="container" id="main">
+            <h1 v-if="this.vulnerability">Vulnerability je ukljucen</h1>
+            <h1 v-else>Vulnerability je iskljucen</h1>
+            <button v-on:click="setVulnerability()">
+                  Ukljuci/iskljuci  
+            </button>
+            <p>1.SQL injection</p>
+            <p>Unesite id user-a:</p>
+            <input v-model="id" placeholder="Upisi broj id-a">
+            <div>
+            <button v-on:click="getUser()">Fetch user data with user {{id}}</button>
+            </div>
+            <ul v-if="this.info">
+                <li v-for="user in users">
+                    {{user}}
+                </li>
+            </ul>
+           
+
+        </div>
+        
     </body>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js" integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+        var app = new Vue({
+            el: '#main',
+            data() {
+                return {
+                    vulnerability: null,
+                    info: false,
+                    currentUrl: window.location.pathname,
+                    splitUrl: [],
+                    users: [],
+                    id: "",
+                }
+            },
+            methods : {
+                initialization() {
+
+                this.getVulnerability();
+               
+
+                },
+                getVulnerability(){
+                    axios
+                        .get("/getVulnerability/")
+                        .then(response => (this.vulnerability = response.data));
+                },
+                getUser(){
+                    axios
+                        .get("/users/"+this.id)
+                        .then(response => {
+                            this.users = response.data;
+                            this.info=true;            
+                        });
+                },
+                setVulnerability(){
+                    axios.post("/setVulnerability/").then(response => this.vulnerability=response.data)
+                }
+            },
+           created(){
+               this.initialization();
+            }
+        })
+    </script>
 </html>
