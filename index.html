@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Example</title>
+        <meta charset="UTF-8">
+        <title>WEB 2: 2.Projekt</title>
     </head>
     <body>
         <div class="container" id="main">
-            <h1 v-if="this.vulnerability">Vulnerability je ukljucen</h1>
-            <h1 v-else>Vulnerability je iskljucen</h1>
+            <h1 v-if="this.vulnerability">Vulnerability je uključen</h1>
+            <h1 v-else>Vulnerability je isključen</h1>
             <button v-on:click="setVulnerability()">
-                  Ukljuci/iskljuci  
+                  Uključi/isključi  
             </button>
             <p>1.SQL injection</p>
+            <p>Ako bi unijeli u donji input: 1 dobili bi usera sa id=1, dok je vulnerability uključen moguće je napisati: 1 or (1=1) koji bi vratio sve usere iz tablice user (Ilegalni upiti)</p>
+            <p>Također ako bi unijeli: 1; select * from info ne samo da bi dobili informacije o korisniku sa id 1 također bi dobili sve podatke u tablici info (Ulančani upiti)</p>
             <p>Unesite id user-a:</p>
-            <input v-model="id" placeholder="Upisi broj id-a">
-            <div>
-            <button v-on:click="getUser()">Fetch user data with user {{id}}</button>
-            </div>
+            <input v-model="id" placeholder="Upisi broj id-a">  
+            <button v-on:click="getUser()">Dohvati podatak</button>
             <ul v-if="this.info">
                 <li v-for="user in users">
                     {{user}}
@@ -23,9 +24,13 @@
             </ul>
            <div>
                <p>2. Cross-site scripting (XSS) </p>
+               <p> Dok je vulnerability uključen moguće je u mjesto za poruku unijeti: &lta onmouseover=window.location.replace("http://www.w3schools.com")>click me! &lt/a&gt </p>
+               <p> Kada bi misom dodirnuli click me! preusmjerio bi nas na drugu stranicu (potencijalno na stranicu napadaca)</p>
+               <p> Takoder ako bi stavili u poruku &ltimg src="notValidUrl" onerror=alert('HACKED!')&gt bi se dogodio alert koji će napraviti alert u browseru (da je ovo aplikacija sa log-in funkcionalnosti mogli bi u alert staviti document.cookie te bi nam alert prikazao cookie login sjednice te bi napadac mogao preuzeti sjednicu da je preusmjerio cookie na svoju stranicu)</p>
                <p>Unesi poruku:</p>
                <input v-model="msg" placeholder="Message"></input>
-               <button v-on:click="getMsg()">Posalji poruku</button>
+               <button v-on:click="getMsg()">Pošalji poruku</button>
+               <p></p>
                <div>
                     <span v-html="message" v-if="vulnerability">
                     </span>
