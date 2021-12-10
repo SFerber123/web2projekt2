@@ -7,11 +7,10 @@ var app = express();
 app.use(bodyparser.json());
 
 var mysqlConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    port: '3306',
-    database: 'web2',
+    host: process.env.host,
+    user: process.env.user,
+    password: process.env.password,
+    database: process.env.database,
     multipleStatements: true,
     insecureAuth : true
     });
