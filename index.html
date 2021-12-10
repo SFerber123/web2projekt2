@@ -26,10 +26,13 @@
                <p>Unesi poruku:</p>
                <input v-model="msg" placeholder="Message"></input>
                <button v-on:click="getMsg()">Posalji poruku</button>
-               <span v-html="message">
-
-               </span>
-               
+               <div>
+                    <span v-html="message" v-if="vulnerability">
+                    </span>
+                    <span v-else>
+                        {{message}}
+                    </span>
+                </div>
            </div>
 
         </div>
