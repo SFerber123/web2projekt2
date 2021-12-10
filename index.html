@@ -21,7 +21,16 @@
                     {{user}}
                 </li>
             </ul>
-           
+           <div>
+               <p>2. Cross-site scripting (XSS) </p>
+               <p>Unesi poruku:</p>
+               <input v-model="msg" placeholder="Message"></input>
+               <button v-on:click="getMsg()">Posalji poruku</button>
+               <span v-html="message">
+
+               </span>
+               
+           </div>
 
         </div>
         
@@ -39,6 +48,9 @@
                     splitUrl: [],
                     users: [],
                     id: "",
+                    msg:null,
+                    message:null,
+                    messageLoaded:false,
                 }
             },
             methods : {
@@ -63,6 +75,10 @@
                 },
                 setVulnerability(){
                     axios.post("/setVulnerability/").then(response => this.vulnerability=response.data)
+                },
+                getMsg(){
+                    this.message=this.msg;
+                    this.messageLoaded=true;
                 }
             },
            created(){
