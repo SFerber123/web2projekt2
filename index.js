@@ -61,6 +61,7 @@ app.get('/getVulnerability' , (req, res) => {
         res.send(vulnerability);
     } 
 );
+
 app.post('/setVulnerability' , (req, res) => {
     if(vulnerability){
         vulnerability=false;
