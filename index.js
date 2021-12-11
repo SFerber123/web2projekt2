@@ -6,7 +6,7 @@ var app = express();
 //Configuring express server
 app.use(bodyparser.json());
 
-var mysqlConnection = mysql.createConnection({
+var mysqlConnection = mysql.createPool({
     host: process.env.host,
     user: process.env.user,
     password: process.env.password,
