@@ -3,9 +3,20 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const fs=require('fs');
 var app = express();
+require('dotenv').config();
+const {auth,requiresAuth} = require('express-openid-connect');
 //Configuring express server
-app.use(bodyparser.json());
-
+app.use(
+    bodyparser.json(),
+    auth({
+        authRequired:false,
+        auth0Logout:true,
+        issuerBaseURL: process.env.ISSUER_BASE_URL,
+        baseURL: process.env.BASE_URL,
+        clientID: process.env.CLIENT_ID,
+        secret: process.env.SECRET,
+    })
+);
 var mysqlConnection = mysql.createPool({
     host: process.env.host,
     user: process.env.user,
@@ -19,7 +30,7 @@ var mysqlConnection = mysql.createPool({
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}..`));
 var vulnerability= true;
-app.get('/',(req,res)=>{
+app.get('/',requiresAuth(),(req,res)=>{
     
     res.writeHead(200,{
         'Content-Type':'text/html'
