@@ -90,6 +90,12 @@ app.post('/MessageEntry/:message', (req, res) => {
     messages.push(message);
     res.send(messages);
   });
+  app.get('/MessageEntryGet/:message', (req, res) => {
+    console.log("Message received:"+req.params.message)
+    const message =req.params.message;
+    messages.push(message);
+    res.send(messages);
+  });
 app.get('/CSRFMessages/',(req,res) =>{
     res.send(messages);
 })

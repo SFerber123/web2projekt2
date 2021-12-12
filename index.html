@@ -103,10 +103,18 @@
                     this.messageLoaded=true;
                 },
                 sendcsrfMessage(){
-                    axios.post("/MessageEntry/"+this.csrfMessage).then(response=> {
+                    if(this.vulnerability){
+                        axios.get("/MessageEntryGet/"+this.csrfMessage).then(response=> {
                         this.csrfMessages=response.data;
                         this.csrfMessagesLoaded=true;
                     })
+                    }else{
+                        axios.post("/MessageEntry/"+this.csrfMessage).then(response=> {
+                        this.csrfMessages=response.data;
+                        this.csrfMessagesLoaded=true;
+                        })
+                    }
+                    
                 },
                 getcsrfMessages(){
                     axios.get("/CSRFMessages/").then(response=>{
