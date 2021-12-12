@@ -30,6 +30,7 @@ var mysqlConnection = mysql.createPool({
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}..`));
 var vulnerability= true;
+var messages=[];
 app.get('/',requiresAuth(),(req,res)=>{
     
     res.writeHead(200,{
@@ -83,3 +84,12 @@ app.post('/setVulnerability' , (req, res) => {
     res.send(vulnerability);
 } 
 );
+app.post('/MessageEntry/:message', (req, res) => {
+    console.log("Message received:"+req.params.message)
+    const message =req.params.message;
+    messages.push(message);
+    res.send(messages);
+  });
+app.get('/CSRFMessages/',(req,res) =>{
+    res.send(messages);
+})
