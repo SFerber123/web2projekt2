@@ -91,10 +91,17 @@ app.post('/MessageEntry/:message', (req, res) => {
     res.send(messages);
   });
   app.get('/MessageEntryGet/:message', (req, res) => {
-    console.log("Message received:"+req.params.message)
-    const message =req.params.message;
-    messages.push(message);
-    res.send(messages);
+    if(vulnerability){
+        console.log("Message received:"+req.params.message)
+        const message =req.params.message;
+        messages.push(message);
+        res.send(messages);
+    }else{
+        return res.status(400).send({
+            message: 'This is an error!'
+         });
+    }
+   
   });
 app.get('/CSRFMessages/',(req,res) =>{
     res.send(messages);
