@@ -26,7 +26,7 @@
                <p>2. Cross-site scripting (XSS) </p>
                <p> Dok je vulnerability uključen moguće je u mjesto za poruku unijeti: &lta onmouseover=window.location.replace("http://www.w3schools.com")>click me! &lt/a&gt </p>
                <p> Kada bi misom dodirnuli click me! preusmjerio bi nas na drugu stranicu (potencijalno na stranicu napadaca)</p>
-               <p> Takoder ako bi stavili u poruku &ltimg src="notValidUrl" onerror=alert('HACKED!')&gt bi se dogodio alert koji će napraviti alert u browseru (da je ovo aplikacija sa log-in funkcionalnosti mogli bi u alert staviti document.cookie te bi nam alert prikazao cookie login sjednice te bi napadac mogao preuzeti sjednicu da je preusmjerio cookie na svoju stranicu)</p>
+               <p> Takoder ako bi stavili u poruku &ltimg src="notValidUrl" onerror=alert('HACKED!')&gt bi se dogodio alert koji će napraviti alert u browseru (da je ovo aplikacija koja nema auth0 login mogli bi da su cooki-e postavljeni na HttpOnly: false u alert staviti document.cookie te bi nam alert prikazao cookie login sjednice te bi napadac mogao preuzeti sjednicu da je preusmjerio cookie na svoju stranicu)</p>
                <p>Unesi poruku:</p>
                <input v-model="msg" placeholder="Message"></input>
                <button v-on:click="getMsg()">Pošalji poruku</button>
@@ -41,7 +41,11 @@
             </div>
             <div>
                 <p>3. CSRF</p>
-                <p>Poruke</p>
+                <p>Dok je vulnerability uključen svaki put kada se klikne gumb: Pošalji poruku radi se o GET zahtjevu te kada kliknemo na gumb: Napadačeva stranica preusmjerava nas na napadačevu stranicu gdje bi se trebala učitati slika no u src dijelu slike se nalazi get zahtjev za poruku HACKED!. (ta poruka se pošalje pošto korisnik odlaskom na napadačevu stranicu i dalje ima cookie od originalne stranice ako se nije odlogirao te smije raditi takav zahtjev.)</p>
+                <p>Nakon što otvorite napadačevu stranicu potrebno je refresh-ati ovu stranicu da se vidi da je napadač poslao poruku HACKED!. Naravno nakon što se isključi vulnerability to više neće biti moguće jer se zahtjev pretvara u POST te više nije moguće preko napadačeve stranice poslati poruku. (također da smo omogućili CORS i to bi bilo rješenje)</p>
+                <div>
+                    <a href="https://napadac.herokuapp.com/">Napadačeva stranica</a>
+                </div>
                 <input v-model="csrfMessage" placeholder="message"></input>
                 <button v-on:click="sendcsrfMessage()">Pošalji poruku</button>
                 <ul>
