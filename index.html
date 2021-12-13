@@ -6,15 +6,15 @@
     </head>
     <body>
         <div class="container" id="main">
-            <h1 v-if="this.vulnerability">Vulnerability je uključen</h1>
-            <h1 v-else>Vulnerability je isključen</h1>
+            <h1 v-if="this.vulnerability">Ranjivost je uključena</h1>
+            <h1 v-else>Ranjivost je isključena</h1>
             <button v-on:click="setVulnerability()">
-                  Uključi/isključi  
+                  Uključi/isključi ranjivost
             </button>
             <p>1.SQL injection</p>
-            <p>Ako bi unijeli u donji input: "1" dobili bi usera sa id=1, dok je vulnerability uključen moguće je napisati: "1 or (1=1)" koji bi vratio sve usere iz tablice user (Ilegalni upiti)</p>
+            <p>Ako bi unijeli u donji input: "1" dobili bi usera sa id=1, dok je ranjivost uključena moguće je napisati: "1 or (1=1)" koji bi vratio sve usere iz tablice user (Ilegalni upiti)</p>
             <p>Također ako bi unijeli: "1; select * from info" ne samo da bi dobili informacije o korisniku sa id 1 također bi dobili sve podatke u tablici info (Ulančani upiti)</p>
-            <p>Kada isključimo vulnerability koristimo query placeholder-e od mysql library-a koji onemogućuju ovakve napade.</p>
+            <p>Kada isključimo ranjivost koristimo query placeholder-e od mysql library-a koji onemogućuju ovakve napade.</p>
             <p>Unesite id user-a:</p>
             <input v-model="id" placeholder="Upisi broj id-a">  
             <button v-on:click="getUser()">Dohvati podatak</button>
@@ -25,10 +25,10 @@
             </ul>
            <div>
                <p>2. Cross-site scripting (XSS) </p>
-               <p> Dok je vulnerability uključen moguće je u mjesto za poruku unijeti: &lta onmouseover=window.location.replace("http://www.w3schools.com")>click me! &lt/a&gt </p>
-               <p> Kada bi misom dodirnuli "click me!" preusmjerio bi nas na drugu stranicu (potencijalno na stranicu napadača.)</p>
-               <p> Također ako bi stavili u poruku &ltimg src="notValidUrl" onerror=alert('HACKED!')&gt bi se u browseru prikazao alert HACKED! (da ova aplikacija nema auth0 autorizaciju te da su cookies postavljeni na "HttpOnly: false" u alert bi mogli staviti document.cookie te bi nam alert prikazao cookie login sjednice te bi napadač mogao preuzeti sjednicu)</p>
-               <p> Kada isključimo vulnerability sav tekst napisan u poruci se automatski sprema kao string te prijašnje ranjivosti neće biti moguće.</p>
+               <p> Dok je ranjivost uključena moguće je u mjesto za poruku unijeti: &lta onmouseover=window.location.replace("http://www.w3schools.com")>click me! &lt/a&gt </p>
+               <p> Kada bi misom dodirnuli "click me!" preusmjerio bi nas na drugu stranicu (potencijalno na stranicu napadača)</p>
+               <p> Također ako bi stavili u poruku &ltimg src="notValidUrl" onerror=alert('HACKED!')&gt u browseru bi se prikazao alert HACKED! (da ova aplikacija nema auth0 autorizaciju te da su cookies postavljeni na "HttpOnly: false" u alert bi mogli staviti document.cookie te bi nam alert prikazao cookie login sjednice te bi napadač mogao preuzeti sjednicu)</p>
+               <p> Kada isključimo ranjivost sav tekst napisan u poruci se automatski sprema kao string te prijašnje ranjivosti neće biti moguće.</p>
                <p>Unesi poruku:</p>
                <input v-model="msg" placeholder="Message"></input>
                <button v-on:click="getMsg()">Pošalji poruku</button>
@@ -43,7 +43,7 @@
             </div>
             <div>
                 <p>3. Cross Site Request Forgery (CSRF)</p>
-                <p>Dok je vulnerability uključen svaki put kada se klikne gumb: "Pošalji poruku" radi se o GET zahtjevu koji pošalje napisanu poruku. Kada kliknemo na gumb: "Napadačeva stranica" preusmjerava nas na napadačevu stranicu gdje bi se trebala učitati slika no u src dijelu slike se nalazi GET zahtjev za poruku HACKED!. (ta poruka se pošalje automatski čim browser korisnika automatski izvodi GET zahtjev unutar src djela img atributa, također korisnik odlaskom na napadačevu stranicu i dalje ima cookie od originalne stranice ako se nije odlogirao te zbog toga može napraviti takav zahtjev.)</p>
+                <p>Dok je ranjivost uključena svaki put kada se klikne gumb: "Pošalji poruku" radi se o GET zahtjevu koji pošalje napisanu poruku te se sve poruke ispisuju ispod. Kada kliknemo na gumb: "Napadačeva stranica" preusmjerava nas na napadačevu stranicu gdje bi se trebala učitati slika no u src dijelu slike se nalazi GET zahtjev za poruku HACKED!. (ta poruka se pošalje automatski čim browser korisnika automatski izvodi GET zahtjev unutar src djela img atributa, također korisnik odlaskom na napadačevu stranicu i dalje ima cookie od originalne stranice ako se nije odlogirao te zbog toga može napraviti takav zahtjev.)</p>
                 <p>Nakon što otvorite napadačevu stranicu potrebno je ponovno učitati ovu stranicu da se vidi da je napadač poslao poruku HACKED!. Naravno nakon što se isključi vulnerability to više neće biti moguće jer se zahtjev pretvara u POST te više nije moguće preko napadačeve stranice poslati poruku. (također da smo omogućili CORS i to bi bilo rješenje)</p>
                 <div>
                     <a href="https://napadac.herokuapp.com/">Napadačeva stranica</a>
