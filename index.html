@@ -44,7 +44,7 @@
             <div>
                 <p>3. Cross Site Request Forgery (CSRF)</p>
                 <p>Dok je ranjivost uključena svaki put kada se klikne gumb: "Pošalji poruku" radi se o GET zahtjevu koji pošalje napisanu poruku te se sve poruke ispisuju ispod. Kada kliknemo na gumb: "Napadačeva stranica" preusmjerava nas na napadačevu stranicu gdje bi se trebala učitati slika no u src dijelu slike se nalazi GET zahtjev za poruku HACKED!. (ta poruka se pošalje automatski čim browser korisnika automatski izvodi GET zahtjev unutar src djela img atributa, također korisnik odlaskom na napadačevu stranicu i dalje ima cookie od originalne stranice ako se nije odlogirao te zbog toga može napraviti takav zahtjev.)</p>
-                <p>Nakon što otvorite napadačevu stranicu potrebno je ponovno učitati ovu stranicu da se vidi da je napadač poslao poruku HACKED!. Naravno nakon što se isključi vulnerability to više neće biti moguće jer se zahtjev pretvara u POST te više nije moguće preko napadačeve stranice poslati poruku. (također da smo omogućili CORS i to bi bilo rješenje)</p>
+                <p>Nakon što otvorite napadačevu stranicu potrebno je ponovno učitati ovu stranicu da se vidi da je napadač poslao poruku HACKED!. Naravno nakon što se isključi ranjivost to više neće biti moguće jer se zahtjev pretvara u POST zahtjev te više nije moguće preko napadačeve stranice poslati poruku. (također da smo omogućili CORS i to bi bilo rješenje)</p>
                 <div>
                     <a href="https://napadac.herokuapp.com/">Napadačeva stranica</a>
                 </div>
